@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.log
+.DS_Store
+Thumbs.db
+.venv/
+venv/
+node_modules/
+outputs/
+*_内部处理报告.md
+*_打印版.docx
+*_打印版.pdf
+*_打印版.html
+
