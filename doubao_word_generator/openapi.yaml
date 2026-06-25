@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: BBL-books Word Generator
+  version: 0.1.0
+  description: Generate downloadable DOCX/PDF print-ready booklets from uploaded materials.
+servers:
+  - url: http://127.0.0.1:8765
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  service:
+                    type: string
+  /generate:
+    post:
+      summary: Generate DOCX/PDF files
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Source files to organize.
+                zip_file:
+                  type: string
+                  format: binary
+                  description: Optional zip package containing source files.
+                source_path:
+                  type: string
+                  description: Local debug-only source folder path.
+                doc_type:
+                  type: string
+                  enum: [manual, supplier, meeting, training, prd, contract, illustrated]
+                output_formats:
+                  type: string
+                  enum: [docx, pdf, "docx,pdf"]
+                title:
+                  type: string
+              required:
+                - doc_type
+                - output_formats
+      responses:
+        "200":
+          description: Generation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                  status:
+                    type: string
+                  downloads:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        url:
+                          type: string
+  /download/{job_id}/{filename}:
+    get:
+      summary: Download generated file
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: filename
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Generated file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
