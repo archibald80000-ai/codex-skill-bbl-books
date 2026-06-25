@@ -1,0 +1,6 @@
+interface:
+  display_name: "BBL-books"
+  short_description: "正式打印版手册与书册生成专家"
+  default_prompt: "Use $bbl-books to turn my source materials into a print-ready formal manual; ask for inputs and output format first if missing."
+policy:
+  allow_implicit_invocation: true
